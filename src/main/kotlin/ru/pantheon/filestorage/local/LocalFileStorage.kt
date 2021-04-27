@@ -10,6 +10,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.RandomAccessFile
+import java.lang.IllegalArgumentException
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.attribute.FileAttribute
 
 /**
  * Реализация [FileStorage] для работы с локальными файлами сервера.
@@ -73,7 +77,24 @@ class LocalFileStorage(localProperties: LocalProperties) : FileStorage {
 
     override fun uploadResource(spaceId: Long, resource: Resource, name: String?) {
         val fileName = name ?: resource.filename
-        FileCopyUtils.copy(resource.inputStream, FileOutputStream("$basePath/space/$spaceId/upload/$fileName"))
+
+        if (fileName != null) {
+            //проверяем наличие уязвимого пути
+            val file = File("$basePath/space/$spaceId/upload/$name")
+            val fileCanonical = file.canonicalPath
+            if (!fileCanonical.startsWith("$basePath/space/$spaceId/upload/")) {
+                throw IllegalArgumentException("Wrong file name $fileName to upload")
+            }
+
+            if (fileName.endsWith("/")) {
+                Files.createDirectories(Paths.get("$basePath/space/$spaceId/upload/$fileName"))
+            } else {
+                val folder = File("$basePath/space/$spaceId/upload/$fileName").parentFile
+                if (!folder.exists()) Files.createDirectories(folder.toPath())
+
+                FileCopyUtils.copy(resource.inputStream, FileOutputStream("$basePath/space/$spaceId/upload/$fileName"))
+            }
+        }
     }
 
     override fun removeResource(spaceId: Long, name: String): Boolean {

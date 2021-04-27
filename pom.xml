@@ -5,7 +5,7 @@
 
     <groupId>ru.pantheon</groupId>
     <artifactId>file-storage-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>file-storage-spring-boot-starter</name>
     <description>Combined file storage utils starter</description>
 
@@ -50,6 +50,12 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>8.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
     </dependencies>
 
