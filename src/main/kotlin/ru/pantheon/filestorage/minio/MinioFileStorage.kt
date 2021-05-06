@@ -4,6 +4,7 @@ import io.minio.GetObjectArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
 import io.minio.RemoveObjectArgs
+import io.minio.StatObjectArgs
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.io.Resource
 import ru.pantheon.filestorage.FileStorage
@@ -113,5 +114,14 @@ class MinioFileStorage(minioProperties: MinioProperties,
 
         minioClient.removeObject(args)
         return true
+    }
+
+    override fun getResourceSize(spaceId: Long, name: String): Long {
+        val args = StatObjectArgs.builder()
+            .bucket(bucket)
+            .`object`("/space/$spaceId/upload/$name")
+            .build()
+
+        return minioClient.statObject(args).size()
     }
 }

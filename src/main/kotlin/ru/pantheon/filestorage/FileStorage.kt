@@ -52,4 +52,9 @@ interface FileStorage {
      * Удаляет файловый ресурс пространства [spaceId] по имени [name].
      */
     fun removeResource(spaceId: Long, name: String): Boolean
+
+    /**
+     * Возвращает размер файла в пространстве [spaceId] по имени [name] в байтах.
+     */
+    fun getResourceSize(spaceId: Long, name: String): Long
 }

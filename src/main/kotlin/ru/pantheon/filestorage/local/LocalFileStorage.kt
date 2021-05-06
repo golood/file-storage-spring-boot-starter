@@ -100,4 +100,8 @@ class LocalFileStorage(localProperties: LocalProperties) : FileStorage {
     override fun removeResource(spaceId: Long, name: String): Boolean {
         return File("$basePath/space/$spaceId/upload/$name").delete()
     }
+
+    override fun getResourceSize(spaceId: Long, name: String): Long {
+        return File("$basePath/space/$spaceId/upload/$name").length()
+    }
 }
