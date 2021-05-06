@@ -31,7 +31,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     init {
         val args = PutObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/avatar/")
+            .`object`("avatar/")
             .stream(ByteArrayInputStream(ByteArray(0)), 0, -1)
             .build()
         minioClient.putObject(args)
@@ -40,7 +40,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun validatePath(spaceId: Long) {
         val args = PutObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/")
+            .`object`("space/$spaceId/upload/")
             .stream(ByteArrayInputStream(ByteArray(0)), 0, -1)
             .build()
 
@@ -50,7 +50,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun getAvatar(name: String): Resource {
         val args = GetObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/avatar/$name")
+            .`object`("avatar/$name")
             .build()
 
         return InputStreamResource(minioClient.getObject(args))
@@ -59,7 +59,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun uploadAvatar(resource: Resource, name: String) {
         val args = PutObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/avatar/$name")
+            .`object`("avatar/$name")
             .stream(resource.inputStream, -1, PART_SIZE)
             .build()
 
@@ -69,7 +69,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun removeAvatar(name: String) {
         val args = RemoveObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/avatar/$name")
+            .`object`("avatar/$name")
             .build()
 
         minioClient.removeObject(args)
@@ -78,7 +78,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun getResource(spaceId: Long, name: String): Resource {
         val args = GetObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/$name")
+            .`object`("space/$spaceId/upload/$name")
             .build()
 
         return InputStreamResource(minioClient.getObject(args))
@@ -87,7 +87,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun getStream(spaceId: Long, name: String, offset: Long, length: Long): InputStream {
         val args = GetObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/$name")
+            .`object`("space/$spaceId/upload/$name")
             .offset(offset)
             .length(length)
             .build()
@@ -99,7 +99,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
         val fileName = name ?: resource.filename
         val args = PutObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/$fileName")
+            .`object`("space/$spaceId/upload/$fileName")
             .stream(resource.inputStream, -1, PART_SIZE)
             .build()
 
@@ -109,7 +109,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun removeResource(spaceId: Long, name: String): Boolean {
         val args = RemoveObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/$name")
+            .`object`("space/$spaceId/upload/$name")
             .build()
 
         minioClient.removeObject(args)
@@ -119,7 +119,7 @@ class MinioFileStorage(minioProperties: MinioProperties,
     override fun getResourceSize(spaceId: Long, name: String): Long {
         val args = StatObjectArgs.builder()
             .bucket(bucket)
-            .`object`("/space/$spaceId/upload/$name")
+            .`object`("space/$spaceId/upload/$name")
             .build()
 
         return minioClient.statObject(args).size()
