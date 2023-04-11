@@ -5,7 +5,7 @@
 
     <groupId>ru.pantheon</groupId>
     <artifactId>file-storage-spring-boot-starter</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>file-storage-spring-boot-starter</name>
     <description>Combined file storage utils starter</description>
 
